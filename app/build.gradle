@@ -5,16 +5,57 @@ android {
     defaultConfig {
         applicationId "com.wc.qbar"
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi'//, 'x86'//, 'arm64-v8a'// , 'armeabi-v7a'//, 'x86_64'
+        }
+    }
+    signingConfigs {
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+            keyAlias 'sport_dance'
+            keyPassword 'wxPF1siohW9B'
+            storeFile file('sport_dance.jks')
+            storePassword 'jIyzgcyaH2'
+        }
+        releaseConfig {
+            v1SigningEnabled true
+            v2SigningEnabled true
+            keyAlias 'sport_dance'
+            keyPassword 'wxPF1siohW9B'
+            storeFile file('sport_dance.jks')
+            storePassword 'jIyzgcyaH2'
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            debuggable false
+            signingConfig signingConfigs.releaseConfig
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            ext.enableCrashlytics = false
+            signingConfig signingConfigs.releaseConfig
+            minifyEnabled false
+            jniDebuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -25,4 +66,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.google.zxing:core:3.3.3'
+    implementation files('libs/wxing-release.aar')
+    implementation 'com.github.MrWangChong:OftenUtils:1.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 }

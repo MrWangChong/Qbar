@@ -1,1 +1,1 @@
-include ':app', ':wxing'
+include ':app', ':wxing', ':fingerprint'
